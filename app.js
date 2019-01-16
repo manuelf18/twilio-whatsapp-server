@@ -1,14 +1,26 @@
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const port = process.env.PORT || 3000;
 const express = require('express');
+const cardRequest = require('./modules/cardRequest');
 const app = express();
 
 
 const response = new MessagingResponse();
-response.message('This is message 1 of 2.');
-response.message('This is message 2 of 2.');
 
-app.post('/', (req, res) => {
+
+app.post('/', async (req, res) => {
+    await cardRequest.get().then(
+        (value) => {
+            let cards = JSON.parse(value);
+            for(i=0; i<3; i++){
+                let responseVars = ['first', 'second', 'third'];
+                response.message(`Your ${responseVars[i]} card of the day is: ${cards[i].name}, which means: ${cards[i].meaning}`);
+            }
+        }, 
+        (err) => {
+            response.message(`There was an an error ${err}`);
+        } 
+    );
     res.type('application/xml');
     res.send(response.toString());
 });
