@@ -4,6 +4,7 @@
   "description": "This is a bot that answers a message sent through whatsapp",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Manuel Fernandez",
